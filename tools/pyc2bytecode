@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright (c) 2007 Jakub Wilk <jwilk@jwilk.net>
+# Copyright (c) 2007, 2012 Jakub Wilk <jwilk@jwilk.net>
 
 import byteplay
 import marshal
@@ -19,7 +19,7 @@ for name in argv[1:]:
 	f.seek(8)
 	co = marshal.load(f);
 	co = byteplay.Code.from_code(co)
-	print "# Bytecode dumped from %s" % `f.name`
+	print "# Bytecode dumped from %r" % f.name
 	print_code(co)
 
 # vim:ts=4 sw=4

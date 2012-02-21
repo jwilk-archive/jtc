@@ -1,4 +1,4 @@
-# Copyright (c) 2007 Jakub Wilk <jwilk@jwilk.net>
+# Copyright (c) 2007, 2012 Jakub Wilk <jwilk@jwilk.net>
 
 '''Expression nodes of Javalette syntax trees.'''
 
@@ -103,7 +103,7 @@ class const(expression):
 		return self.type.x86_asm_const(self.value, env)
 
 	def __str__(self):
-		return `self.value`
+		return repr(self.value)
 
 _binary_numeric_ops = set(('+', '-', '*', '/', '%'))
 _inequality_ops = set(('<', '<=', '>', '>='))
@@ -175,10 +175,10 @@ class binary_operator(expression):
 	[
 		'A binary operation.',
 		'Available operators:',
-		'- arithmetic operators: %s;' % ', '.join(`op` for op in _binary_numeric_ops),
-		'- inequality operators: %s;' % ', '.join(`op` for op in _inequality_ops),
-		'- equality operators: %s;' % ', '.join(`op` for op in _inequality_ops),
-		'- logical connectives: %s.' % ', '.join(`op` for op in _inequality_ops)
+		'- arithmetic operators: %s;' % ', '.join(map(repr, _binary_numeric_ops)),
+		'- inequality operators: %s;' % ', '.join(map(repr, _inequality_ops)),
+		'- equality operators: %s;' % ', '.join(map(repr, _inequality_ops)),
+		'- logical connectives: %s.' % ', '.join(map(repr, _inequality_ops))
 	])
 
 	def __init__(self, operator, left_operand, right_operand, position):

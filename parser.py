@@ -258,7 +258,7 @@ class Parser(object):
 	def p_error(self, token):
 		from sys import stderr
 		if token:
-			raise ParseError(token.lexpos, 'Syntax error near ' + `token.value`)
+			raise ParseError(token.lexpos, 'Syntax error near ' + repr(token.value))
 		else:
 			raise ParseError(None, 'Syntax error at the end of file')
 

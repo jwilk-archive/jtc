@@ -107,7 +107,7 @@ class Tokenizer(object):
 			elif substring == r't':
 				return '\t'
 			else:
-				self._warn('Unknown string escape: \\ + ' + `substring`)
+				self._warn('Unknown string escape: \\ + ' + repr(substring))
 				return substring
 
 	def t_STRING(self, t):
@@ -143,7 +143,7 @@ class Tokenizer(object):
 		if ch == '"':
 			self._error('Error: Unterminated string')
 		else:
-			self._error('Illegal character: ' + `ch`)
+			self._error('Illegal character: ' + repr(ch))
 
 	def _error(self, text):
 		position = (self.lexer.lineno, self.lexer.x)
