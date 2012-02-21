@@ -1,6 +1,6 @@
 #!/bin/sh
 tmpfile=`mktemp -t 'jtc.XXXXXXXX'` || exit 1
-run='python'
+run='python2.4'
 [ "q$*" = 'q-X' ] && run=''
 
 trap 'rm -f "$tmpfile"' EXIT
