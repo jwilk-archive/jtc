@@ -404,8 +404,8 @@ class unary_operator(expression):
 	[
 		'An unary operation.',
 		'Available operators:',
-		'- arithmetic operators: %s;' % ', '.join(`op` for op in _unary_numeric_ops),
-		'- logical connectives: %s.' % ', '.join(`op` for op in _unary_logical_ops)
+		'- arithmetic operators: %s;' % ', '.join(map(repr, _unary_numeric_ops)),
+		'- logical connectives: %s.' % ', '.join(map(repr, _unary_logical_ops)),
 	])
 
 	def __init__(self, operator, operand, position):
