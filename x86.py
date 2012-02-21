@@ -1,4 +1,5 @@
-# Copyright (c) 2007 Jakub Wilk <jwilk@jwilk.net>
+# encoding=UTF-8
+# Copyright © 2007 Jakub Wilk <jwilk@jwilk.net>
 
 '''x86 (IA-32) assembly support.'''
 

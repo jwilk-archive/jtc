@@ -1,4 +1,5 @@
-# Copyright (c) 2007 Jakub Wilk <jwilk@jwilk.net>
+# encoding=UTF-8
+# Copyright © 2007 Jakub Wilk <jwilk@jwilk.net>
 
 '''Error handling of the Javalette programs.'''
 

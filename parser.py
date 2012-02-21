@@ -1,4 +1,6 @@
-# Copyright (c) 2007, 2012 Jakub Wilk <jwilk@jwilk.net>
+# encoding=UTF-8
+
+# Copyright © 2007, 2012 Jakub Wilk <jwilk@jwilk.net>
 
 '''Javalette parser.'''
 
