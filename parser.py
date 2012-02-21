@@ -1,8 +1,8 @@
-# Copyright (c) 2007 Jakub Wilk <jwilk@jwilk.net>
+# Copyright (c) 2007, 2012 Jakub Wilk <jwilk@jwilk.net>
 
 '''Javalette parser.'''
 
-import yacc
+import ply.yacc as yacc
 import syntax
 import type
 import expression

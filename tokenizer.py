@@ -1,8 +1,8 @@
-# Copyright (c) 2007 Jakub Wilk <jwilk@jwilk.net>
+# Copyright (c) 2007, 2012 Jakub Wilk <jwilk@jwilk.net>
 
 '''Javalette tokenizer.'''
 
-import lex
+import ply.lex as lex
 import re
 
 __all__ = ['Tokenizer']
