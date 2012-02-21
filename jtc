@@ -1,0 +1,76 @@
+#!/usr/bin/python
+# Copyright (c) 2007 Jakub Wilk <jwilk@jwilk.net>
+
+'''Usage:
+\tjtc [-T|-P|-X] [-o <output_file>] <source_file>
+
+Options:
+\t-T\tpretty print
+\t-P\tcompile to python bytecode (default)
+\t-X\tcompile to x86 machine code
+'''
+
+from getopt import GetoptError, gnu_getopt as getopt
+from sys import argv, stdout, stderr, exit
+
+def usage():
+	print >>stderr, __doc__
+	exit(1)
+
+def failure(message = None):
+	if message is not None:
+		print >>stderr, message
+	print >>stderr, 'Compilation failed!'
+	exit(2)
+
+try:
+	(opts, args) = getopt(argv[1:], 'o:TPX')
+except GetoptError:
+	usage()
+if len(args) != 1:
+	usage()
+
+from tokenizer import Tokenizer
+from parser import Parser
+from error import JtError
+import context
+from os.path import abspath
+
+filename = abspath(args[0])
+stdin = file(filename, 'r')
+target = 'P'
+for (ok, ov) in opts:
+	if ok in ('-T', '-P', '-X'):
+		target = ok[1]
+	elif ok == '-o':
+		stdout = file(ov, 'w')
+contents = stdin.read()
+tokenizer = Tokenizer()
+tokenizer.build()
+tokenizer.input(contents)
+parser = Parser(tokenizer)
+result_tree = None
+try:
+	result_tree = parser.parse()
+except JtError, error:
+	failure(error)
+context.add_pdf(result_tree)
+ok  = context.inspect(result_tree)
+ok &= context.validate(result_tree)
+if target == 'T':
+	print result_tree
+if not ok:
+	failure()
+result_tree.filename = filename
+
+if target != 'T':
+	if stdout.isatty():
+		failure('Prevented from printing binary garbage to the terminal.')
+	if target == 'P':
+		result_tree.compile_pyc(stdout)
+	elif target == 'X':
+		result_tree.compile_x86(stdout)
+	else:
+		raise NotImplementedError()
+
+# vim:ts=4 sw=4
