@@ -1,13 +1,11 @@
-.PHONY: all clean sanity-x sanity-py
+.PHONY: all
+all: check
 
-all: sanity-py sanity-x
+.PHONY: check
+check:
+	nosetests -v
 
-sanity-x:
-	./Make-sanity -X
-
-sanity-py:
-	./Make-sanity -P
-
+.PHONY: clean
 clean:
 	$(RM) *.pyc parser.out parsetab.*
 

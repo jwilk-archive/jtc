@@ -1,0 +1,2 @@
+[4.14] Incompatible type for argument 1 of 'printInt': <double> provided but <int> expected
+Compilation failed!

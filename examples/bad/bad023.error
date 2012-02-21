@@ -1,0 +1,2 @@
+[4.10] Incompatible types in initialization: <int> provided but <double> expected
+Compilation failed!

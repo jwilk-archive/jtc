@@ -1,0 +1,2 @@
+[4.13] Incompatible types: <double> == <boolean> provided but <boolean> == <boolean> or <double> == <double> or <int> == <int> expected
+Compilation failed!

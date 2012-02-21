@@ -1,0 +1,2 @@
+[3.14] Incompatible types: <int> * <double> provided but <double> * <double> or <int> * <int> expected
+Compilation failed!
