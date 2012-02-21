@@ -24,7 +24,6 @@ class test_examples:
 		)
 		stderr = child.stderr.read()
 		stderr = stderr.splitlines()
-		stderr = [line for line in stderr if 'label alone on a line without a colon might be in error' not in line] # FIXME!
 		assert_equal(stderr, [])
 		rc = child.wait()
 		assert_equal(rc, 0)

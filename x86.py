@@ -187,6 +187,8 @@ def compile(listing, o_file = None):
 			if was_label and line.public:
 				print >>asm_file, 'GLOBAL %s' % line
 			line = str(line)
+			if was_label:
+				line += ':'
 			was_instr = line[:1].islower() and not was_label
 			if was_instr:
 				op = line.split(None, 1)[0]
