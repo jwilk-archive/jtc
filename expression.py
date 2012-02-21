@@ -39,7 +39,7 @@ class expression(syntax.base):
 
 	def check_var_usage(self, lsv, rsv):
 		raise NotImplementedError()
-	
+
 	def py_cast_to(self, type):
 		'''[py] Generate code for type-casting the expression value.'''
 		return self.type.py_cast_to(type)
@@ -47,7 +47,7 @@ class expression(syntax.base):
 	def x86_asm_push(self, env):
 		'''[x86] Generate code for pushing the expression value on the stack.'''
 		return self.to_x86_asm(env) + self.type.x86_asm_push(env)
-	
+
 	def x86_asm_discard(self, env):
 		'''[x86] Generate code for discarding the expression value.'''
 		return self.type.x86_asm_discard(env)
@@ -55,16 +55,16 @@ class expression(syntax.base):
 	def x86_size(self):
 		'''[x86] Return size of the expression value, in bytes.'''
 		return self.type.x86_size()
-	
+
 	def x86_asm_cast_to(self, type, env):
 		'''[x86] Generate code for type-casting the expression value.'''
 		return self.type.x86_asm_cast_to(type, env)
-	
+
 	def is_evaluatable(self):
 		'''Return whether the expression can be used in an evaluation statement,
 		even without an explicit type-cast to <void>.'''
 		return self.type == void_t
-	
+
 	_doc = \
 	{
 		'is_evaluatable': 'Return whether the expression can be used in an evaluation statement,\neven without an explicit type-cast to <void>.'
@@ -101,7 +101,7 @@ class const(expression):
 
 	def to_x86_asm(self, env):
 		return self.type.x86_asm_const(self.value, env)
-	
+
 	def __str__(self):
 		return `self.value`
 
@@ -187,7 +187,7 @@ class binary_operator(expression):
 		self.operator = operator
 		self.left = left_operand
 		self.right = right_operand
-	
+
 	def get_var_refs(self):
 		result = []
 		if isinstance(self.left, expression):
@@ -398,7 +398,7 @@ _x86_unary_double_op = \
 }
 
 class unary_operator(expression):
-	
+
 	__doc__ = '\n'.join(
 	[
 		'An unary operation.',
@@ -412,7 +412,7 @@ class unary_operator(expression):
 		self.operator = operator
 		self.left = operand
 		self.position = position
-	
+
 	def get_var_refs(self):
 		if isinstance(self.left, expression):
 			return self.left.get_var_refs()
@@ -448,7 +448,7 @@ class unary_operator(expression):
 
 	def to_py(self):
 		return self.left.to_py() + [(bp.SetLineno, self.y), (_py_unary_op[self.operator], None)]
-	
+
 	def to_x86_asm(self, env):
 		op = self.operator
 		if isinstance(self.left.type, type.x86_dword_type):
@@ -469,7 +469,7 @@ class reference(expression):
 		self.ident = identifier
 		self.bind = None
 		self.position = position
-	
+
 	def get_var_refs(self):
 		return self,
 
@@ -499,7 +499,7 @@ class reference(expression):
 
 	def to_x86_asm(self, env):
 		return self.bind.x86_asm_read(env)
-	
+
 	def x86_asm_write(self, value, env):
 		return self.bind.x86_asm_write(value, env)
 
@@ -527,7 +527,7 @@ class call(expression):
 
 	def validate(self):
 		return expression.validate(self) and self._post_validate()
-	
+
 	def _validate(self):
 		ok = self.function.validate()
 		for argument in self.arguments:
@@ -560,7 +560,7 @@ class call(expression):
 						"Incompatible type for argument %d of '%s': <%s> provided but <%s> expected" %
 						(i, function.name, argument.type, type)).warn()
 		return ok
-	
+
 	def check_var_usage(self, lsv, rsv):
 		ok = True
 		for expression in self.arguments:
@@ -630,7 +630,7 @@ class cast(expression):
 		result = self.expression.to_py()
 		result += self.expression.py_cast_to(self.cast_type)
 		return result
-	
+
 	def to_x86_asm(self, env):
 		result = self.expression.to_x86_asm(env)
 		result += self.expression.x86_asm_cast_to(self.cast_type, env)
@@ -680,7 +680,7 @@ class assignment(expression):
 
 	def to_x86_asm(self, env):
 		return self.lvalue.x86_asm_write(self.rvalue, env)
-	
+
 	def is_evaluatable(self):
 		return True
 

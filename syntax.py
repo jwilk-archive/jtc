@@ -69,7 +69,7 @@ class statement(base):
 
 	def get_blocks(self):
 		return ()
-	
+
 	def get_var_refs(self):
 		return ()
 
@@ -96,13 +96,13 @@ class block_statement(block, statement):
 			if line.returns():
 				return True
 		return False
-	
+
 	def check_var_usage(self, lsv, rsv):
 		ok = True
 		for line in self.contents:
 			ok &= line.check_var_usage(lsv, rsv)
 		return ok
-	
+
 	def to_py(self):
 		result = []
 		for line in self.contents:
@@ -123,7 +123,7 @@ class program(block):
 
 	def __str__(self):
 		return '\n\n'.join(str(item) for item in self.contents)
-	
+
 	def to_py(self):
 		from builtins import py_stub_pre, py_stub_post
 		listing = []
@@ -163,7 +163,7 @@ class program(block):
 		for item in self.contents:
 			listing += item.to_x86_asm()
 		return listing
-		
+
 	def compile_x86(self, output_file):
 		'''[x86] Compile the program into an ELF executable.'''
 		x86_asm = self.to_x86_asm()
@@ -236,11 +236,11 @@ class variable(base):
 				result += (bp.DUP_TOP, None),
 			result += (bp.STORE_FAST, self.uid),
 			return result
-	
+
 	def py_read(self):
 		'''[py] Generate code for reading the variables.'''
 		return [(bp.LOAD_FAST, self.uid)]
-	
+
 	def x86_asm_write(self, expression, env):
 		'''[x86] Generate code for storing value of the expression to the variable.'''
 		if expression is None:
@@ -284,7 +284,7 @@ class function(variable):
 			(bp.MAKE_FUNCTION, 0),
 			(bp.STORE_GLOBAL, self.name)
 		]
-	
+
 	def py_read(self):
 		'''[py] Generate code for reading the function address.'''
 		return [(bp.LOAD_GLOBAL, self.name)]
@@ -409,7 +409,7 @@ class declaration(statement):
 class argv(declaration):
 
 	'''An artificial declaration of function arguments.'''
-	
+
 	def __init__(self, variables):
 		declaration.__init__(self, variables, None)
 
@@ -418,7 +418,7 @@ class argv(declaration):
 
 	def get_var_refs(self):
 		return ()
-	
+
 	def check_var_usage(self, lsv, rsv):
 		lsv |= set(self.variables)
 		return True
@@ -539,7 +539,7 @@ class while_loop(statement):
 		self.finally_s = finally_s
 		self.then_s = then_s
 		self.position = position
-	
+
 	def validate(self):
 		ok = self.expression.validate()
 		if self.expression.type is not None and self.expression.type != type.boolean_t:
@@ -552,7 +552,7 @@ class while_loop(statement):
 
 	def get_blocks(self):
 		return self.then_s, self.finally_s
-	
+
 	def get_var_refs(self):
 		return self.expression.get_var_refs()
 
@@ -588,7 +588,7 @@ class while_loop(statement):
 			(bp.POP_TOP, None)
 		]
 		return result
-	
+
 	def to_x86_asm(self, env):
 		loop_label = x86.Label()
 		condition_label = x86.Label()
@@ -659,7 +659,7 @@ class return_statement(statement):
 	def returns(self):
 		'''Check if the function returns (in this statement). And yes, it does.'''
 		return True
-	
+
 	def to_py(self):
 		result = [(bp.SetLineno, self.y)]
 		if self.expression is None:

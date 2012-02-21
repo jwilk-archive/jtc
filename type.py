@@ -34,16 +34,16 @@ class base(object):
 
 	def is_eq_comparable(self):
 		return False
-	
+
 	def is_ineq_comparable(self):
 		return False
-	
+
 	def is_numeric(self):
 		return False
 
 	def is_castable_to(self, type):
 		return isinstance(type, void_type)
-	
+
 	def py_cast_to(self, type):
 		global void_type
 		if isinstance(type, void_type):
@@ -54,7 +54,7 @@ class base(object):
 			]
 		else:
 			return NotImplemented
-	
+
 	_doc = \
 	{
 		'is_eq_comparable': "Returns whether you can compare values of this type with '==' and '!=' operators.",
@@ -71,7 +71,7 @@ class base(object):
 		'x86_asm_write': '[x86] Generate code for storing value to the variable (of this type).',
 		'x86_asm_const': '[x86] Generate code for loading a constant (of this type).'
 	}
-	
+
 def simple_type(type_ident):
 	if type_ident == 'int':
 		return int_t
@@ -83,7 +83,7 @@ def simple_type(type_ident):
 		return void_t
 
 class py_simple_type(base):
-	
+
 	'''[py] An abstract simple type.'''
 
 	def is_eq_comparable(self):
@@ -91,13 +91,13 @@ class py_simple_type(base):
 
 	def is_castable_to(self, type):
 		return base.is_castable_to(self, type) or isinstance(type, py_simple_type)
-	
+
 	def py_cast_to(self, type):
 		result = base.py_cast_to(self, type)
 		if (result == NotImplemented):
 			result = type.py_cast_from(self)
 		return result
-	
+
 class void_type(base):
 
 	'''The void type'''
@@ -143,7 +143,7 @@ class numeric_type(base):
 
 	def is_numeric(self):
 		return True
-	
+
 	def is_ineq_comparable(self):
 		return True
 
@@ -186,7 +186,7 @@ class int_type(numeric_type, py_simple_type, x86_dword_type):
 		return 'int'
 
 class double_type(numeric_type, py_simple_type):
-	
+
 	'''The floating-point (double) type.'''
 
 	def py_cast_from(self, type):
@@ -233,7 +233,7 @@ class double_type(numeric_type, py_simple_type):
 			x86.SubESP(8),
 			'fstp QWORD [esp]'
 		]
-	
+
 	def x86_asm_discard(self, env):
 		return ['fstp st0']
 
@@ -308,7 +308,7 @@ class boolean_type(py_simple_type, x86_dword_type):
 
 	def x86_asm_const(self, value, env):
 		return ['xor eax, eax'] + ['inc eax'] * value
-	
+
 	def x86_asm_cast_to(self, type, env):
 		if isinstance(type, (void_type, int_type, boolean_type)):
 			return []

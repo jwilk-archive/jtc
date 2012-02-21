@@ -65,11 +65,11 @@ class Parser(object):
 
 	def p_instr(self, p):
 		'''
-			instr : complex_i 
-			      | decl_i 
-			      | cond_i 
-			      | loop_i 
-			      | return_i 
+			instr : complex_i
+			      | decl_i
+			      | cond_i
+			      | loop_i
+			      | return_i
 			      | expr_i
 		'''
 		p[0] = p[1]
@@ -107,7 +107,7 @@ class Parser(object):
 		p[0] = syntax.variable(None, p[1], None, p.lexpos(1))
 
 	def p_decl_value(self, p):
-		'decl : IDENT ASSIGN expr' 
+		'decl : IDENT ASSIGN expr'
 		p[0] = syntax.variable(None, p[1], p[3], p.lexpos(1))
 
 	def p_inc(self, p):
@@ -179,11 +179,11 @@ class Parser(object):
 		'''
 			or_e : or_e LOR and_e
 			and_e : and_e LAND compare_e
-			compare_e : compare_e EQUAL rel_e 
+			compare_e : compare_e EQUAL rel_e
 			          | compare_e NOTEQ rel_e
-			rel_e : rel_e LT add_e 
-			      | rel_e GT add_e 
-			      | rel_e LE add_e 
+			rel_e : rel_e LT add_e
+			      | rel_e GT add_e
+			      | rel_e LE add_e
 			      | rel_e GE add_e
 	    	add_e : add_e PLUS mul_e
 	    	      | add_e MINUS mul_e
@@ -196,8 +196,8 @@ class Parser(object):
 
 	def p_sa_e(self, p):
 		'''
-			sa_e : NOT sa_e 
-			     | PLUS sa_e 
+			sa_e : NOT sa_e
+			     | PLUS sa_e
 			     | MINUS sa_e
 		'''
 		p[0] = expression.unary_operator(p[1], p[2], p.lexpos(1))
@@ -238,15 +238,15 @@ class Parser(object):
 	def p_const_int(self, p):
 		'const : INT'
 		p[0] = expression.const(p[1], type.int_t, p.lexpos(1))
-	
+
 	def p_const_double(self, p):
 		'const : DOUBLE'
 		p[0] = expression.const(p[1], type.double_t, p.lexpos(1))
-	
+
 	def p_const_boolean(self, p):
 		'const : BOOLEAN'
 		p[0] = expression.const(p[1], type.boolean_t, p.lexpos(1))
-	
+
 	def p_const_string(self, p):
 		'const : STRING'
 		p[0] = expression.const(p[1], type.string_t, p.lexpos(1))

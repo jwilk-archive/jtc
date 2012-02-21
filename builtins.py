@@ -94,7 +94,7 @@ class pdf_function(syntax.function):
 	def __init__(self, name, return_type, *arg_types):
 		self.type = type.function_type(return_type, arg_types)
 		syntax.variable.__init__(self, self.type, name, pdf_function._pdf_block(), None)
-	
+
 	@staticmethod
 	def construct_all():
 		'''Return a sequence of all known built-in functions.'''
@@ -119,7 +119,7 @@ class pdf_function(syntax.function):
 			firstlineno = 0,
 			docstring = None)
 		return code
-	
+
 	body_to_pyc.__doc__ = syntax.function.body_to_pyc.im_func.__doc__
 
 	def to_x86_asm(self):
@@ -127,7 +127,7 @@ class pdf_function(syntax.function):
 		result += x86.Label(self.x86_name),
 		result += self.x86_asm
 		return result
-	
+
 	to_x86_asm.__doc__ = syntax.function.to_x86_asm.im_func.__doc__
 
 _py_pdf_print = \
@@ -293,7 +293,7 @@ class pdf_print_int(pdf_function):
 		pdf_function.__init__(self, 'printInt', type.void_t, type.int_t)
 
 class pdf_print_double(pdf_function):
-	
+
 	'''printDouble(double) built-in function.'''
 
 	def __init__(self):
@@ -302,7 +302,7 @@ class pdf_print_double(pdf_function):
 		pdf_function.__init__(self, 'printDouble', type.void_t, type.double_t)
 
 class pdf_print_string(pdf_function):
-	
+
 	'''printString("...") built-in function.'''
 
 	def __init__(self):
@@ -311,7 +311,7 @@ class pdf_print_string(pdf_function):
 		pdf_function.__init__(self, 'printString', type.void_t, type.string_t)
 
 class pdf_error(pdf_function):
-	
+
 	'''error() built-in procedure.'''
 
 	def __init__(self):
@@ -320,7 +320,7 @@ class pdf_error(pdf_function):
 		pdf_function.__init__(self, 'error', type.void_t)
 
 class pdf_read_int(pdf_function):
-	
+
 	'''readInt() built-in function.'''
 
 	def __init__(self):
@@ -329,7 +329,7 @@ class pdf_read_int(pdf_function):
 		pdf_function.__init__(self, 'readInt', type.int_t)
 
 class pdf_read_double(pdf_function):
-	
+
 	'''readDouble() built-in function.'''
 
 	def __init__(self):

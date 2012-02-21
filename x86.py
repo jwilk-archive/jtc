@@ -21,7 +21,7 @@ class GccError(CompileError):
 class Env(object):
 	def __init__(self, vsp = 0):
 		self.vsp = vsp
-	
+
 	def clone(self):
 		return Env(self.vsp)
 
@@ -45,10 +45,10 @@ class Extern(object):
 
 	def __init__(self, symbol):
 		self.symbol = symbol
-	
+
 	def __str__(self):
 		return self.symbol
-	
+
 class Label(object):
 
 	'''A point in the code with a label.'''
@@ -81,7 +81,7 @@ class SubESP(object):
 class AddESP(SubESP):
 
 	'''Pseudo-instruction: increase ESP lazily.'''
-	
+
 	def __init__(self, n):
 		SubESP.__init__(self, -n)
 
