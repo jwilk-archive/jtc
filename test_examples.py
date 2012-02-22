@@ -11,12 +11,13 @@ import subprocess as ipc
 class test_examples:
 
 	abstract = True
+	python = os.getenv('PYTHON') or 'python'
 
 	def _compile(self, filename, output_filename=None):
 		if output_filename is None:
 			output_filename = self.executable
 		child = ipc.Popen(
-			['./jtc'] + self.jtc_args + [filename, '-o', self.executable],
+			[self.python, './jtc'] + self.jtc_args + [filename, '-o', self.executable],
 			stderr=ipc.PIPE
 		)
 		stderr = child.stderr.read()
@@ -86,6 +87,6 @@ class test_python(test_examples):
 
 	abstract = False
 	jtc_args = ['-P']
-	runner = ['python2.4']
+	runner = [test_examples.python]
 
 # vim:ts=4 sw=4
