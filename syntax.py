@@ -152,8 +152,10 @@ class program(block):
 
 	def compile_pyc(self, output_file):
 		'''[py] Compile the program into a Python bytecode file.'''
+		import imp
 		import marshal
-		output_file.write('\x6d\xf2\x0d\x0a\x00\x00\x00\x00')
+		output_file.write(imp.get_magic())
+		output_file.write('\x00\x00\x00\x00')
 		pyc = self.to_pyc()
 		pyo = pyc.to_code()
 		marshal.dump(pyo, output_file)
