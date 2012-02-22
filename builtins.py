@@ -8,7 +8,7 @@ import sys
 import syntax
 import type
 
-import byteplay as bp
+import bp
 import x86
 
 _py_globals = \
@@ -34,7 +34,9 @@ py_stub_post = filter(None,
 	(bp.LOAD_GLOBAL, '__name__'),
 	(bp.LOAD_CONST, '__main__'),
 	(bp.COMPARE_OP, '=='),
-	(bp.JUMP_IF_FALSE, _stub_label),
+]
++ bp.jump_if_false(_stub_label) +
+[
 	sys.version_info >= (2, 5) and (bp.LOAD_CONST, -1),
 	(bp.LOAD_CONST, None),
 	(bp.IMPORT_NAME, 'sys'),
@@ -42,7 +44,6 @@ py_stub_post = filter(None,
 	(bp.LOAD_GLOBAL, 'main'),
 	(bp.CALL_FUNCTION, 0),
 	(bp.CALL_FUNCTION, 1),
-	(bp.POP_TOP, None),
 	(bp.POP_TOP, None),
 	(_stub_label, None),
 	(bp.RETURN_VALUE, None)

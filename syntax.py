@@ -8,7 +8,7 @@ from struct import pack
 _type = type
 import type
 
-import byteplay as bp
+import bp
 import x86
 
 __all__ =  ['argv', 'base', 'block', 'block_statement', 'declaration', 'error', 'evaluation', 'function', 'if_then_else', 'program', 'return_statement', 'statement', 'variable', 'while_loop']
@@ -488,14 +488,9 @@ class if_then_else(statement):
 		label_endif = bp.Label()
 		result = [(bp.SetLineno, self.y)]
 		result += self.expression.to_py()
-		result += \
-		[
-			(bp.JUMP_IF_FALSE, label_else),
-			(bp.POP_TOP, None)
-		]
+		result += bp.jump_if_false(label_else)
 		result += self.then_s.to_py()
-		result += \
-		[
+		result += [
 			(bp.JUMP_FORWARD, label_endif),
 			(label_else, None),
 			(bp.POP_TOP, None)
@@ -578,11 +573,7 @@ class while_loop(statement):
 		result += self.finally_s.to_py()
 		result += (loop_label, None),
 		result += self.expression.to_py()
-		result += \
-		[
-			(bp.JUMP_IF_FALSE, end_label),
-			(bp.POP_TOP, None)
-		]
+		result += bp.jump_if_false(end_label)
 		result += self.then_s.to_py()
 		result += \
 		[

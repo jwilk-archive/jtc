@@ -9,7 +9,7 @@ from syntax import TypeMismatch
 from type import int_t, double_t, boolean_t, void_t
 from builtins import x86_0div_error
 
-import byteplay as bp
+import bp
 import x86
 
 __all__ = ['expression', 'assignment', 'binary_operator', 'call', 'cast', 'const', 'reference', 'unary_operator']
@@ -124,8 +124,8 @@ _py_binary_numeric_op = \
 
 _py_binary_logical_op = \
 {
-	'&&': bp.JUMP_IF_FALSE,
-	'||': bp.JUMP_IF_TRUE
+	'&&': bp.jump_if_false,
+	'||': bp.jump_if_true,
 }
 
 
@@ -256,12 +256,8 @@ class binary_operator(expression):
 			condition = _py_binary_logical_op[op]
 			result = []
 			result += lpy
-			result += \
-			[
-				(bp.SetLineno, self.y),
-				(condition, label),
-				(bp.POP_TOP, None)
-			]
+			result += [(bp.SetLineno, self.y)]
+			result += condition(label)
 			result += rpy
 			result += (label, None),
 			return result

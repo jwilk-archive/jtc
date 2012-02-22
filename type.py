@@ -3,7 +3,7 @@
 
 '''Types of the Javalette language.'''
 
-import byteplay as bp
+import bp
 import x86
 
 from struct import pack
