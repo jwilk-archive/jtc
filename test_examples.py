@@ -22,7 +22,6 @@ class test_examples:
 		stderr = child.stderr.read()
 		rc = child.wait()
 		return rc, stderr
-		assert_equal(stderr, '')
 
 	def _test_good(self, filename):
 		base_name, _ = os.path.splitext(filename)
@@ -31,8 +30,8 @@ class test_examples:
 			input_filename = os.devnull
 		output_filename = base_name + '.output'
 		rc, stderr = self._compile(filename)
-		assert_equal(rc, 0)
 		assert_equal(stderr, '')
+		assert_equal(rc, 0)
 		with open(input_filename, 'r') as input_file:
 			child = ipc.Popen(self.runner + [self.executable],
 				stdin=input_file,
@@ -42,8 +41,8 @@ class test_examples:
 			stdout = child.stdout.read()
 			stderr = child.stdout.read()
 			rc = child.wait()
-		assert_equal(rc, 0)
 		assert_equal(stderr, '')
+		assert_equal(rc, 0)
 		with open(output_filename, 'r') as output_file:
 			expected_stdout = output_file.read()
 		assert_equal(stdout, expected_stdout)
