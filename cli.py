@@ -60,7 +60,7 @@ def main(args):
 	ok  = context.inspect(result_tree)
 	ok &= context.validate(result_tree)
 	if target == 'T':
-		print result_tree
+		print >>stdout, result_tree
 	if not ok:
 		failure()
 	result_tree.filename = filename
