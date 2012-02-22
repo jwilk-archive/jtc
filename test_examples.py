@@ -39,7 +39,7 @@ class test_examples:
 				stderr=ipc.PIPE
 			)
 			stdout = child.stdout.read()
-			stderr = child.stdout.read()
+			stderr = child.stderr.read()
 			rc = child.wait()
 		assert_equal(stderr, '')
 		assert_equal(rc, 0)
