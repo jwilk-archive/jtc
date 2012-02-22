@@ -3,6 +3,8 @@
 
 '''Built-ins for the Javalette language.'''
 
+import sys
+
 import syntax
 import type
 
@@ -25,7 +27,7 @@ sum(
 del _name, _alias
 
 _stub_label = bp.Label()
-py_stub_post = \
+py_stub_post = filter(None,
 [
 	(bp.BUILD_LIST, 0),
 	(bp.STORE_GLOBAL, '__all__'),
@@ -33,6 +35,7 @@ py_stub_post = \
 	(bp.LOAD_CONST, '__main__'),
 	(bp.COMPARE_OP, '=='),
 	(bp.JUMP_IF_FALSE, _stub_label),
+	sys.version_info >= (2, 5) and (bp.LOAD_CONST, -1),
 	(bp.LOAD_CONST, None),
 	(bp.IMPORT_NAME, 'sys'),
 	(bp.IMPORT_FROM, 'exit'),
@@ -43,7 +46,7 @@ py_stub_post = \
 	(bp.POP_TOP, None),
 	(_stub_label, None),
 	(bp.RETURN_VALUE, None)
-]
+])
 del _stub_label
 
 _label_io_error = x86.Label()
