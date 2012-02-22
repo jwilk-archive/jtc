@@ -212,7 +212,7 @@ class binary_operator(expression):
 			if ltype == rtype and ltype in type.numeric_types:
 				self.type = ltype
 			else:
-				expected = ' or '.join('<%s> %s <%s>' % (t, op, t) for t in type.numeric_types)
+				expected = ' or '.join('<%s> %s <%s>' % (t, op, t) for t in sorted(map(str, type.numeric_types)))
 				TypeMismatch(self.position,
 					'Incompatible types: <%s> %s <%s> provided but %s expected' %
 					(ltype, op, rtype, expected)).warn()
@@ -220,7 +220,7 @@ class binary_operator(expression):
 			if ltype == rtype and ltype in type.ineq_comparable_types:
 				self.type = boolean_t
 			else:
-				expected = ' or '.join('<%s> %s <%s>' % (t, op, t) for t in type.ineq_comparable_types)
+				expected = ' or '.join('<%s> %s <%s>' % (t, op, t) for t in sorted(map(str, type.ineq_comparable_types)))
 				TypeMismatch(self.position,
 					'Incompatible types: <%s> %s <%s> provided but %s expected' %
 					(ltype, op, rtype, expected)).warn()
@@ -235,7 +235,7 @@ class binary_operator(expression):
 			if ltype == rtype and ltype in type.eq_comparable_types:
 				self.type = boolean_t
 			else:
-				expected = ' or '.join('<%s> %s <%s>' % (t, op, t) for t in type.eq_comparable_types)
+				expected = ' or '.join('<%s> %s <%s>' % (t, op, t) for t in sorted(map(str,type.eq_comparable_types)))
 				TypeMismatch(self.position,
 					'Incompatible types: <%s> %s <%s> provided but %s expected' %
 					(ltype, op, rtype, expected)).warn()
