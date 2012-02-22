@@ -49,7 +49,7 @@ class block(base):
 		self.contents = contents
 
 	@staticmethod
-	def _indent(s):
+	def indent(s):
 		return '  ' + str(s).replace('\n', '\n  ')
 
 	def validate(self):
@@ -60,9 +60,9 @@ class block(base):
 
 	def __str__(self):
 		if len(self.contents) == 0:
-			return block._indent('skip')
+			return block.indent('skip')
 		else:
-			return '\n'.join(block._indent(item) for item in self.contents)
+			return '\n'.join(block.indent(item) for item in self.contents)
 
 class statement(base):
 
