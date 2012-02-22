@@ -12,21 +12,27 @@ class test_examples:
 
 	abstract = True
 
+	def _compile(self, filename, output_filename=None):
+		if output_filename is None:
+			output_filename = self.executable
+		child = ipc.Popen(
+			['./jtc'] + self.jtc_args + [filename, '-o', self.executable],
+			stderr=ipc.PIPE
+		)
+		stderr = child.stderr.read()
+		rc = child.wait()
+		return rc, stderr
+		assert_equal(stderr, '')
+
 	def _test_good(self, filename):
 		base_name, _ = os.path.splitext(filename)
 		input_filename = base_name + '.input'
 		if not os.path.exists(input_filename):
 			input_filename = os.devnull
 		output_filename = base_name + '.output'
-		child = ipc.Popen(
-			['./jtc'] + self.jtc_args + [filename, '-o', self.executable],
-			stderr=ipc.PIPE
-		)
-		stderr = child.stderr.read()
-		stderr = stderr.splitlines()
-		assert_equal(stderr, [])
-		rc = child.wait()
+		rc, stderr = self._compile(filename)
 		assert_equal(rc, 0)
+		assert_equal(stderr, '')
 		with open(input_filename, 'r') as input_file:
 			child = ipc.Popen(self.runner + [self.executable],
 				stdin=input_file,
@@ -45,12 +51,7 @@ class test_examples:
 	def _test_bad(self, filename):
 		base_name, _ = os.path.splitext(filename)
 		error_filename = base_name + '.error'
-		child = ipc.Popen(
-			['./jtc'] + self.jtc_args + [filename, '-o', os.devnull],
-			stderr=ipc.PIPE
-		)
-		stderr = child.stderr.read()
-		rc = child.wait()
+		rc, stderr = self._compile(filename, output_filename=os.devnull)
 		assert_not_equal(rc, 0)
 		with open(error_filename, 'r') as error_file:
 			expected_stderr = error_file.read()
