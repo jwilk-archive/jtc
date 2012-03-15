@@ -1,5 +1,5 @@
 # encoding=UTF-8
-# Copyright © 2007 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2007, 2012 Jakub Wilk <jwilk@jwilk.net>
 
 '''Usage:
 \tjtc [-T|-P|-X] [-o <output_file>] <source_file>
