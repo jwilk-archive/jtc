@@ -22,6 +22,11 @@
 
 from nose.tools import assert_equal, assert_not_equal
 
+try:
+	from nose.tools import assert_multi_line_equal
+except ImportError:
+	assert_multi_line_equal = assert_equal
+
 import os
 import glob
 import stat
@@ -52,7 +57,7 @@ class test_examples:
 		output_filename = base_name + '.output'
 		rc, stderr = self._compile(filename)
 		stderr = stderr.decode()
-		assert_equal(stderr, '')
+		assert_multi_line_equal(stderr, '')
 		assert_equal(rc, 0)
 		with open(input_filename, 'rb') as input_file:
 			child = ipc.Popen(self.runner + [self.executable],
@@ -64,7 +69,7 @@ class test_examples:
 			stderr = child.stderr.read()
 			rc = child.wait()
 		stderr = stderr.decode()
-		assert_equal(stderr, '')
+		assert_multi_line_equal(stderr, '')
 		assert_equal(rc, 0)
 		with open(output_filename, 'rb') as output_file:
 			expected_stdout = output_file.read()
@@ -78,7 +83,7 @@ class test_examples:
 		assert_not_equal(rc, 0)
 		with open(error_filename, 'r') as error_file:
 			expected_stderr = error_file.read()
-		assert_equal(stderr, expected_stderr)
+		assert_multi_line_equal(stderr, expected_stderr)
 
 	def setup(self):
 		fd, self.executable = tempfile.mkstemp(prefix='jtc-testsuite.')
