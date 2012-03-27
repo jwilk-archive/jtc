@@ -24,6 +24,7 @@ from nose.tools import assert_equal, assert_not_equal
 
 import os
 import glob
+import stat
 import tempfile
 import subprocess as ipc
 
@@ -50,9 +51,10 @@ class test_examples:
 			input_filename = os.devnull
 		output_filename = base_name + '.output'
 		rc, stderr = self._compile(filename)
+		stderr = stderr.decode()
 		assert_equal(stderr, '')
 		assert_equal(rc, 0)
-		with open(input_filename, 'r') as input_file:
+		with open(input_filename, 'rb') as input_file:
 			child = ipc.Popen(self.runner + [self.executable],
 				stdin=input_file,
 				stdout=ipc.PIPE,
@@ -61,9 +63,10 @@ class test_examples:
 			stdout = child.stdout.read()
 			stderr = child.stderr.read()
 			rc = child.wait()
+		stderr = stderr.decode()
 		assert_equal(stderr, '')
 		assert_equal(rc, 0)
-		with open(output_filename, 'r') as output_file:
+		with open(output_filename, 'rb') as output_file:
 			expected_stdout = output_file.read()
 		assert_equal(stdout, expected_stdout)
 
@@ -71,6 +74,7 @@ class test_examples:
 		base_name, _ = os.path.splitext(filename)
 		error_filename = base_name + '.error'
 		rc, stderr = self._compile(filename, output_filename=os.devnull)
+		stderr = stderr.decode()
 		assert_not_equal(rc, 0)
 		with open(error_filename, 'r') as error_file:
 			expected_stderr = error_file.read()
@@ -79,7 +83,7 @@ class test_examples:
 	def setup(self):
 		fd, self.executable = tempfile.mkstemp(prefix='jtc-testsuite.')
 		os.close(fd)
-		os.chmod(self.executable, 0700)
+		os.chmod(self.executable, stat.S_IRWXU)
 
 	def teardown(self):
 		os.unlink(self.executable)
