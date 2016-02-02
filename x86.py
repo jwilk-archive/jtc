@@ -84,7 +84,7 @@ class Label(object):
 		return self.name
 
 class Return(object):
-	'''Pseudo-instruction: clean up the stack and return from a prodedure/function.'''
+	'''Pseudo-instruction: clean up the stack and return from a procedure/function.'''
 	pass
 
 class SyncESP(object):
@@ -214,7 +214,7 @@ def compile(listing, o_file = None):
 				if op in _stack_ops:
 					diff_esp = _stack_ops[op]
 					if diff_esp == NotImplemented:
-						raise NotImplementedError('The "%s" x86 intruction is not supported' % op)
+						raise NotImplementedError('The "%s" x86 instruction is not supported' % op)
 					esp += diff_esp
 			if lazy_esp != 0 and (_sj_ops_re.search(line) or was_label):
 				print >>asm_file, '\tlea esp, [esp + %d]' % lazy_esp

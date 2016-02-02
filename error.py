@@ -40,7 +40,7 @@ class JtError(Exception):
 		print >>stderr, self
 
 	def __init__(self, position, text):
-		'''Initalize the exception:
+		'''Initialize the exception:
 		- 'position' is a (y, x) tuple or None;
 		- 'text' is an error message text.'''
 		Exception.__init__(self, JtError._message(position, text))
