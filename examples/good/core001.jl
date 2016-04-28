@@ -4,7 +4,7 @@ main() {
 	printInt(rfac(10));
 	printInt(mfac(10));
         printInt(ifac(10));
-        double r ; // just to test blocks 
+        double r ; // just to test blocks
 	{
 	  int n = 10;
 	  int r = 1;
@@ -20,7 +20,7 @@ main() {
         return 0 ;
 }
 
-int 
+int
 fac(int a) {
 	int r;
 	int n;

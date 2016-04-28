@@ -21,7 +21,7 @@ void prD (double d) {
   d = d - floor(d);
   printString(".");
   while (j < 5) {
-    d = d * 10.0;	
+    d = d * 10.0;
     int x = (int)d;
     printInt((int)d);
     d = d - floor(d);

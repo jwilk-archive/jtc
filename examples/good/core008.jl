@@ -1,4 +1,4 @@
-// multiple variables of the same type declared 
+// multiple variables of the same type declared
 // and possibly initialized in the same statement
 
 int main() {

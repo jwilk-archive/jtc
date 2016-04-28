@@ -19,7 +19,7 @@ int main() {
     printInt(i);
   } else {
     printString("foo");
-  } 
+  }
   printInt(i);
   return 0 ;
 
