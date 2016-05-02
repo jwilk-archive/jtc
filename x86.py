@@ -240,7 +240,7 @@ def compile(listing, o_file = None):
 def link(o_file, x_file = None):
 	'''Link the ELF object file into an executable ELF file.'''
 	x_file_tmp = _maybe_mktemp(x_file, prefix = 'jtc')
-	if call(['gcc', o_file.name, '-o', x_file_tmp.name]) == 0:
+	if call(['gcc', '-m32', o_file.name, '-o', x_file_tmp.name]) == 0:
 		return _maybe_copy(x_file_tmp, x_file)
 	else:
 		_maybe_close(x_file_tmp, x_file)
