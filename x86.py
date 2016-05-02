@@ -250,4 +250,4 @@ def build(listing, x_file):
 	'''Build the x86 assembly code into an executable ELF file.'''
 	return link(compile(listing), x_file)
 
-# vim:ts=4 sw=4
+# vim:ts=4 sts=4 sw=4

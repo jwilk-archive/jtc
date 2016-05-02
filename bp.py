@@ -51,4 +51,4 @@ else:
 
 __all__ = list(__all__) + ['jump_if_true', 'jump_if_false']
 
-# vim:ts=4 sw=4
+# vim:ts=4 sts=4 sw=4

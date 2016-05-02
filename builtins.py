@@ -364,4 +364,4 @@ class pdf_read_double(pdf_function):
 del _label_io_error
 del _x_stderr, _x_fputs, _x_exit, _x_snprintf, _x_puts
 
-# vim:ts=4 sw=4
+# vim:ts=4 sts=4 sw=4

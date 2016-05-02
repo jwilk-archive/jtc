@@ -9,4 +9,4 @@ check:
 clean:
 	$(RM) *.pyc parser.out parsetab.*
 
-# vim:ts=4
+# vim:ts=4 sts=4 sw=4

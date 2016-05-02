@@ -727,4 +727,4 @@ for _item in _globals:
 			_method.im_func.__doc__ = _doc
 del _globals, _method, _item, _doc
 
-# vim:ts=4 sw=4
+# vim:ts=4 sts=4 sw=4

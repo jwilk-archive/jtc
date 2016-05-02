@@ -45,4 +45,4 @@ class JtError(Exception):
 		- 'text' is an error message text.'''
 		Exception.__init__(self, JtError._message(position, text))
 
-# vim:ts=4 sw=4
+# vim:ts=4 sts=4 sw=4
