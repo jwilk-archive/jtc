@@ -200,7 +200,7 @@ class int_type(numeric_type, py_simple_type, x86_dword_type):
 				'and eax, 1'
 			]
 		else:
-			raise NotImplemenedError()
+			raise NotImplementedError()
 
 	def __str__(self):
 		return 'int'
@@ -291,7 +291,7 @@ class double_type(numeric_type, py_simple_type):
 				'fstp st0'
 			]
 		else:
-			raise NotImplemenedError()
+			raise NotImplementedError()
 
 	def __str__(self):
 		return 'double'
@@ -335,7 +335,7 @@ class boolean_type(py_simple_type, x86_dword_type):
 		elif isinstance(type, double_type):
 			return int_t.x86_asm_cast_to(type, env)
 		else:
-			raise NotImplemenedError()
+			raise NotImplementedError()
 
 	def __str__(self):
 		return 'boolean'
