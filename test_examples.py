@@ -1,6 +1,6 @@
 # encoding=UTF-8
 
-# Copyright © 2012 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2012-2016 Jakub Wilk <jwilk@jwilk.net>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the “Software”), to deal
@@ -73,7 +73,7 @@ class test_examples:
         assert_equal(rc, 0)
         with open(output_filename, 'rb') as output_file:
             expected_stdout = output_file.read()
-        assert_equal(stdout, expected_stdout)
+        assert_equal(expected_stdout, stdout)
 
     def _test_bad(self, filename):
         base_name, _ = os.path.splitext(filename)
@@ -83,7 +83,7 @@ class test_examples:
         assert_not_equal(rc, 0)
         with open(error_filename, 'r') as error_file:
             expected_stderr = error_file.read()
-        assert_multi_line_equal(stderr, expected_stderr)
+        assert_multi_line_equal(expected_stderr, stderr)
 
     def setup(self):
         fd, self.executable = tempfile.mkstemp(prefix='jtc-testsuite.')
