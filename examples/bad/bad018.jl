@@ -6,6 +6,6 @@ int main() {
 }
 
 int foo(int y,int z) {
- return y;
+	return y;
 }
 

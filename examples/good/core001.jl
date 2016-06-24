@@ -3,21 +3,21 @@ main() {
 	printInt(fac(10));
 	printInt(rfac(10));
 	printInt(mfac(10));
-        printInt(ifac(10));
-        double r ; // just to test blocks
+	printInt(ifac(10));
+	double r ; // just to test blocks
 	{
-	  int n = 10;
-	  int r = 1;
-	  while (n>0) {
-	    r = r * n;
-	    n = n - 1;
-	  }
-	  printInt(r);
+		int n = 10;
+		int r = 1;
+		while (n>0) {
+			r = r * n;
+			n = n - 1;
+		}
+		printInt(r);
 	}
 	printDouble(dfac(10.0));
 	printString ("hello */");
-        printString ("/* world") ;
-        return 0 ;
+	printString ("/* world") ;
+	return 0 ;
 }
 
 int
@@ -73,11 +73,11 @@ dfac(double n)
 int ifac(int n) { return ifac2f(1,n); }
 
 int ifac2f(int l, int h) {
-        if (l == h)
-                return l;
-        if (l > h)
-                return 1;
-        int m;
-        m = (l+h) / 2;
-        return ifac2f(l,m) * ifac2f(m+1,h);
+	if (l == h)
+		return l;
+	if (l > h)
+		return 1;
+	int m;
+	m = (l+h) / 2;
+	return ifac2f(l,m) * ifac2f(m+1,h);
 }
