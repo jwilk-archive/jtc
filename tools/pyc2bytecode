@@ -26,20 +26,20 @@ import marshal
 from sys import argv
 
 def print_code(co):
-	print
-	print '# %s (%s, %s)' % (co, co.name, co.filename)
-	print co.code
-	for instr in co.code:
-		for arg in instr:
-			if isinstance(arg, byteplay.Code):
-				print_code(arg)
+    print
+    print '# %s (%s, %s)' % (co, co.name, co.filename)
+    print co.code
+    for instr in co.code:
+        for arg in instr:
+            if isinstance(arg, byteplay.Code):
+                print_code(arg)
 
 for name in argv[1:]:
-	f = file(name, 'rb');
-	f.seek(8)
-	co = marshal.load(f);
-	co = byteplay.Code.from_code(co)
-	print "# Bytecode dumped from %r" % f.name
-	print_code(co)
+    f = file(name, 'rb');
+    f.seek(8)
+    co = marshal.load(f);
+    co = byteplay.Code.from_code(co)
+    print "# Bytecode dumped from %r" % f.name
+    print_code(co)
 
-# vim:ts=4 sts=4 sw=4
+# vim:ts=4 sts=4 sw=4 et
