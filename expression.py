@@ -417,7 +417,7 @@ class unary_operator(expression):
 
     __doc__ = '\n'.join(
     [
-        'An unary operation.',
+        'A unary operation.',
         'Available operators:',
         '- arithmetic operators: %s;' % ', '.join(map(repr, _unary_numeric_ops)),
         '- logical connectives: %s.' % ', '.join(map(repr, _unary_logical_ops)),
