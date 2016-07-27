@@ -35,9 +35,9 @@ def print_code(co):
                 print_code(arg)
 
 for name in argv[1:]:
-    f = file(name, 'rb');
+    f = file(name, 'rb')
     f.seek(8)
-    co = marshal.load(f);
+    co = marshal.load(f)
     co = byteplay.Code.from_code(co)
     print "# Bytecode dumped from %r" % f.name
     print_code(co)

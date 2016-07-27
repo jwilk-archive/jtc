@@ -85,8 +85,7 @@ class expression(syntax.base):
         even without an explicit type-cast to <void>.'''
         return self.type == void_t
 
-    _doc = \
-    {
+    _doc = {
         'is_evaluatable': 'Return whether the expression can be used in an evaluation statement,\neven without an explicit type-cast to <void>.'
     }
     for _method in ('validate', 'to_py', 'to_x86_asm', 'get_var_refs', 'check_var_usage'):
@@ -113,8 +112,7 @@ class const(expression):
         return True
 
     def to_py(self):
-        return \
-        [
+        return [
             (bp.SetLineno, self.y),
             (bp.LOAD_CONST, self.value)
         ]
@@ -131,68 +129,59 @@ _equality_ops = set(('==', '!='))
 _binary_logical_ops = set(('&&', '||'))
 _commutative_binary_ops = set(('+', '*', '==', '!=', '&&', '||'))
 
-_py_binary_numeric_op = \
-{
-    '+':             bp.BINARY_ADD,
-    '-':             bp.BINARY_SUBTRACT,
-    '*':             bp.BINARY_MULTIPLY,
-    ('/', int_t):    bp.BINARY_FLOOR_DIVIDE,
+_py_binary_numeric_op = {
+    '+': bp.BINARY_ADD,
+    '-': bp.BINARY_SUBTRACT,
+    '*': bp.BINARY_MULTIPLY,
+    ('/', int_t): bp.BINARY_FLOOR_DIVIDE,
     ('/', double_t): bp.BINARY_TRUE_DIVIDE,
-    '%':             bp.BINARY_MODULO
+    '%': bp.BINARY_MODULO,
 }
 
-_py_binary_logical_op = \
-{
+_py_binary_logical_op = {
     '&&': bp.jump_if_false,
     '||': bp.jump_if_true,
 }
 
-
-_x86_binary_int_op = \
-{
-    '+':  ['add eax, ecx'],
-    '-':  ['sub eax, ecx'],
-    '*':  ['imul ecx'],
+_x86_binary_int_op = {
+    '+': ['add eax, ecx'],
+    '-': ['sub eax, ecx'],
+    '*': ['imul ecx'],
 }
 
-_x86_binary_double_op = \
-{
+_x86_binary_double_op = {
     '+': 'add',
     '-': 'subr',
     '*': 'mul',
     '/': 'divr'
 }
 
-_x86_inequality_int_op = \
-{
-    '<':  'l',
+_x86_inequality_int_op = {
+    '<': 'l',
     '<=': 'le',
     '>=': 'ge',
-    '>':  'g',
+    '>': 'g',
     '==': 'e',
     '!=': 'ne',
 }
 
-_x86_inequality_double_op = \
-{
-    '<':  'b',
+_x86_inequality_double_op = {
+    '<': 'b',
     '<=': 'be',
     '>=': 'ae',
-    '>':  'a',
+    '>': 'a',
     '==': 'e',
     '!=': 'ne',
 }
 
-_x86_binary_logical_op = \
-{
+_x86_binary_logical_op = {
     '&&': 'z',
     '||': 'nz'
 }
 
 class binary_operator(expression):
 
-    __doc__ = '\n'.join(
-    [
+    __doc__ = '\n'.join([
         'A binary operation.',
         'Available operators:',
         '- arithmetic operators: %s;' % ', '.join(map(repr, _binary_numeric_ops)),
@@ -217,7 +206,7 @@ class binary_operator(expression):
         return result
 
     def _validate(self):
-        ok =   self.left.validate()
+        ok = self.left.validate()
         ok &= self.right.validate()
         return ok
 
@@ -254,7 +243,7 @@ class binary_operator(expression):
             if ltype == rtype and ltype in type.eq_comparable_types:
                 self.type = boolean_t
             else:
-                expected = ' or '.join('<%s> %s <%s>' % (t, op, t) for t in sorted(map(str,type.eq_comparable_types)))
+                expected = ' or '.join('<%s> %s <%s>' % (t, op, t) for t in sorted(map(str, type.eq_comparable_types)))
                 TypeMismatch(self.position,
                     'Incompatible types: <%s> %s <%s> provided but %s expected' %
                     (ltype, op, rtype, expected)).warn()
@@ -262,7 +251,7 @@ class binary_operator(expression):
             raise NotImplementedError('Type checking for binary operator %s' % op)
 
     def check_var_usage(self, lsv, rsv):
-        ok  =  self.left.check_var_usage(lsv, rsv)
+        ok = self.left.check_var_usage(lsv, rsv)
         ok &= self.right.check_var_usage(lsv, rsv)
         return ok
 
@@ -301,8 +290,7 @@ class binary_operator(expression):
             condition = _x86_binary_logical_op[op]
             result = []
             result += self.left.to_x86_asm(env)
-            result += \
-            [
+            result += [
                 'or eax, eax',
                 'j%s %s' % (condition, label),
             ]
@@ -315,8 +303,7 @@ class binary_operator(expression):
         if isinstance(self.left.type, type.x86_dword_type):
             result = lx + rx + ['pop ecx']
             if op in _x86_inequality_int_op:
-                result += \
-                [
+                result += [
                     'cmp ecx, eax',
                     'set%s al' % _x86_inequality_int_op[op],
                     'and eax, 1'
@@ -328,8 +315,7 @@ class binary_operator(expression):
                 result += _x86_binary_int_op[op]
                 return result
             if op in ('%', '/'):
-                result += \
-                [
+                result += [
                     'or ecx, ecx',
                     'jz %s' % x86_0div_error,
                     'cdq',
@@ -337,8 +323,7 @@ class binary_operator(expression):
                 ]
                 if op == '%':
                     label = x86.Label()
-                    result += \
-                    [
+                    result += [
                         'mov eax, edx',
                         'or eax, eax',
                         'jz %s' % label,
@@ -356,8 +341,7 @@ class binary_operator(expression):
             elif op == '%':
                 label = x86.Label()
                 const = x86.Const('touch:\0')
-                result += \
-                [
+                result += [
                     const,
                     'fprem1',
                     'fldz',            # st0 = 0,     st1 = r,    st2 = b
@@ -377,8 +361,7 @@ class binary_operator(expression):
                 ]
                 return result
             elif op in _x86_inequality_double_op:
-                result += \
-                [
+                result += [
                     'fucomip st1',
                     'set%s al' % _x86_inequality_double_op[op],
                     'and eax, 1',
@@ -393,30 +376,26 @@ class binary_operator(expression):
 _unary_logical_ops = set(('!',))
 _unary_numeric_ops = set(('+', '-'))
 
-_py_unary_op = \
-{
+_py_unary_op = {
     '!': bp.UNARY_NOT,
     '+': bp.UNARY_POSITIVE,
     '-': bp.UNARY_NEGATIVE
 }
 
-_x86_unary_dword_op = \
-{
+_x86_unary_dword_op = {
     '!': ['xor eax, 1'],
     '+': [],
     '-': ['neg eax']
 }
 
-_x86_unary_double_op = \
-{
+_x86_unary_double_op = {
     '-': ['fldz', 'fsubrp st1'],
     '+': []
 }
 
 class unary_operator(expression):
 
-    __doc__ = '\n'.join(
-    [
+    __doc__ = '\n'.join([
         'A unary operation.',
         'Available operators:',
         '- arithmetic operators: %s;' % ', '.join(map(repr, _unary_numeric_ops)),
@@ -498,7 +477,7 @@ class reference(expression):
         self.type = self.bind.type
 
     def check_var_usage(self, lsv, rsv):
-        if self.bind == None:
+        if self.bind is None:
             return True
         rsv.add(self.bind)
         if self.bind in lsv:
@@ -588,8 +567,7 @@ class call(expression):
         result += self.function.to_py()
         for argument in self.arguments:
             result += argument.to_py()
-        result += \
-        [
+        result += [
             (bp.SetLineno, self.y),
             (bp.CALL_FUNCTION, len(self.arguments))
         ]
@@ -666,7 +644,7 @@ class assignment(expression):
         self.position = position
 
     def validate(self):
-        ok  = self.lvalue.validate()
+        ok = self.lvalue.validate()
         ok &= self.rvalue.validate()
         if ok:
             ltype = self.lvalue.type
@@ -692,7 +670,7 @@ class assignment(expression):
         return ok
 
     def to_py(self):
-        return [(bp.SetLineno, self.y)] + self.lvalue.py_write(value = self.rvalue, pop = False)
+        return [(bp.SetLineno, self.y)] + self.lvalue.py_write(value=self.rvalue, pop=False)
 
     def to_x86_asm(self, env):
         return self.lvalue.x86_asm_write(self.rvalue, env)

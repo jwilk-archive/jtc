@@ -30,7 +30,7 @@ import type
 import bp
 import x86
 
-__all__ =  ['argv', 'base', 'block', 'block_statement', 'declaration', 'error', 'evaluation', 'function', 'if_then_else', 'program', 'return_statement', 'statement', 'variable', 'while_loop']
+__all__ = ['argv', 'base', 'block', 'block_statement', 'declaration', 'error', 'evaluation', 'function', 'if_then_else', 'program', 'return_statement', 'statement', 'variable', 'while_loop']
 
 class base(object):
 
@@ -46,8 +46,7 @@ class base(object):
         '''Line number of appearance.'''
         return self.position[0]
 
-    _doc = \
-    {
+    _doc = {
         'validate': 'Look for type mismatches.\nCheck for proper variable usage.',
         'to_py': '[py] Generate code.',
         'to_x86_asm': '[x86] Generate code.',
@@ -158,16 +157,16 @@ class program(block):
         from builtins import this_module_file_name as builtins_module_file_name
         listing = self.to_py()
         return bp.Code(
-            code = listing,
-            freevars = [],
-            args = [],
-            varargs = False,
-            varkwargs = False,
-            newlocals = False,
-            name = '__stub__',
-            filename = builtins_module_file_name,
-            firstlineno = 0,
-            docstring = None)
+            code=listing,
+            freevars=[],
+            args=[],
+            varargs=False,
+            varkwargs=False,
+            newlocals=False,
+            name='__stub__',
+            filename=builtins_module_file_name,
+            firstlineno=0,
+            docstring=None)
 
     def compile_pyc(self, output_file):
         '''[py] Compile the program into a Python bytecode file.'''
@@ -245,7 +244,7 @@ class variable(base):
                 (self.value.type, self.type)).warn()
             return False
 
-    def py_write(self, value = None, pop = True):
+    def py_write(self, value=None, pop=True):
         '''[py] Generate code for storing the value to the variable.'''
         if value is None:
             value = self.value
@@ -300,8 +299,7 @@ class function(variable):
 
     def to_py(self, filename):
         body_code = self.body_to_pyc(filename)
-        return \
-        [
+        return [
             (bp.LOAD_CONST, body_code),
             (bp.MAKE_FUNCTION, 0),
             (bp.STORE_GLOBAL, self.name)
@@ -314,16 +312,16 @@ class function(variable):
     def body_to_pyc(self, filename):
         '''[py] Generate bytecode for function body.'''
         code = bp.Code(
-            code = self.value.to_py(),
-            freevars = [],
-            args = ['_%d' % n for n in xrange(len(self.type.arg_type_list))],
-            varargs = False,
-            varkwargs = False,
-            newlocals = True,
-            name = self.name,
-            filename = filename,
-            firstlineno = self.y,
-            docstring = None)
+            code=self.value.to_py(),
+            freevars=[],
+            args=['_%d' % n for n in xrange(len(self.type.arg_type_list))],
+            varargs=False,
+            varkwargs=False,
+            newlocals=True,
+            name=self.name,
+            filename=filename,
+            firstlineno=self.y,
+            docstring=None)
         return code
 
     @property
@@ -332,8 +330,7 @@ class function(variable):
         return '_f_%s' % self.name
 
     def to_x86_asm(self):
-        result = \
-        [
+        result = [
             x86.SyncESP(),
             '%s:' % self.x86_name,
         ]
@@ -523,15 +520,13 @@ class if_then_else(statement):
         label_endif = x86.Label()
         result = []
         result += self.expression.to_x86_asm(env)
-        result += \
-        [
+        result += [
             'or eax, eax',
             'jz %s' % label_else
         ]
         result += self.expression.x86_asm_discard(env)
         result += self.then_s.to_x86_asm(env)
-        result += \
-        [
+        result += [
             'jmp %s' % label_endif,
             label_else
         ]
@@ -583,8 +578,7 @@ class while_loop(statement):
         loop_label = bp.Label()
         finally_label = bp.Label()
         end_label = bp.Label()
-        result = \
-        [
+        result = [
             (bp.SetLineno, self.y),
             (bp.JUMP_FORWARD, loop_label),
             (finally_label, None)
@@ -594,8 +588,7 @@ class while_loop(statement):
         result += self.expression.to_py()
         result += bp.jump_if_false(end_label)
         result += self.then_s.to_py()
-        result += \
-        [
+        result += [
             (bp.JUMP_ABSOLUTE, finally_label),
             (end_label, None),
             (bp.POP_TOP, None)
@@ -605,8 +598,7 @@ class while_loop(statement):
     def to_x86_asm(self, env):
         loop_label = x86.Label()
         condition_label = x86.Label()
-        result = \
-        [
+        result = [
             'jmp %s' % condition_label,
         ]
         result += loop_label,
@@ -614,8 +606,7 @@ class while_loop(statement):
         result += self.finally_s.to_x86_asm(env)
         result += condition_label,
         result += self.expression.to_x86_asm(env)
-        result += \
-        [
+        result += [
             'or eax, eax',
             'jnz %s' % loop_label,
         ]
@@ -685,7 +676,7 @@ class return_statement(statement):
     def to_x86_asm(self, env):
         result = []
         if self.expression is not None:
-            result += self.expression.to_x86_asm(env);
+            result += self.expression.to_x86_asm(env)
         result += x86.Return(),
         return result
 

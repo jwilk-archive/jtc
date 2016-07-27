@@ -36,15 +36,13 @@ if sys.version_info >= (2, 7):
 else:
 
     def jump_if_false(label):
-        return \
-        [
+        return [
             (JUMP_IF_FALSE, label),
             (POP_TOP, None)
         ]
 
     def jump_if_true(label):
-        return \
-        [
+        return [
             (JUMP_IF_TRUE, label),
             (POP_TOP, None)
         ]

@@ -36,7 +36,7 @@ def usage():
     print >>sys.stderr, __doc__
     sys.exit(1)
 
-def failure(message = None):
+def failure(message=None):
     if message is not None:
         print >>sys.stderr, message
     print >>sys.stderr, 'Compilation failed!'
@@ -76,7 +76,7 @@ def main(args):
     except JtError, error:
         failure(error)
     context.add_pdf(result_tree)
-    ok  = context.inspect(result_tree)
+    ok = context.inspect(result_tree)
     ok &= context.validate(result_tree)
     if target == 'T':
         print >>stdout, result_tree

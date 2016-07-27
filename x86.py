@@ -39,7 +39,7 @@ class GccError(CompileError):
     pass
 
 class Env(object):
-    def __init__(self, vsp = 0):
+    def __init__(self, vsp=0):
         self.vsp = vsp
 
     def clone(self):
@@ -73,7 +73,7 @@ class Label(object):
 
     '''A point in the code with a label.'''
 
-    def __init__(self, name = None, public = False):
+    def __init__(self, name=None, public=False):
         if name is None:
             name = ('_l_%x' % id(self)).replace('-', 'M')
         self.name = name
@@ -127,8 +127,7 @@ def _maybe_close(tmp_file, orig_file):
         pass
     raise GccError()
 
-_stack_ops = \
-{
+_stack_ops = {
     'call': 0,
     'enter': NotImplemented,
     'leave': NotImplemented,
@@ -161,8 +160,7 @@ _stack_ops = \
     'retf': NotImplemented
 }
 
-_jmp_ops = \
-set((
+_jmp_ops = set((
     'jmp',
     'jcxz', 'jecxz',
     'ja', 'jae', 'jb', 'jbe', 'jc', 'je', 'jg', 'jge', 'jl', 'jle', 'jna', 'jnae', 'jnb', 'jnbe', 'jnc',
@@ -174,10 +172,10 @@ import re
 _sj_ops_re = re.compile(r'\be?sp\b|^(%s)\b' % '|'.join(set(_stack_ops) | _jmp_ops))
 _bp_re = re.compile(r'##\((-?\d+)\)')
 
-def compile(listing, o_file = None):
+def compile(listing, o_file=None):
     '''Compile the x86 assembly code into an executable ELF file.'''
-    asm_file = mktemp(prefix = 'jtc', suffix = '.asm')
-    o_file_tmp = _maybe_mktemp(o_file, prefix = 'jtc', suffix = '.o')
+    asm_file = mktemp(prefix='jtc', suffix='.asm')
+    o_file_tmp = _maybe_mktemp(o_file, prefix='jtc', suffix='.o')
     consts = {}
     esp = 0
     lazy_esp = 0
@@ -237,9 +235,9 @@ def compile(listing, o_file = None):
         _maybe_close(o_file_tmp, o_file)
         raise NasmError()
 
-def link(o_file, x_file = None):
+def link(o_file, x_file=None):
     '''Link the ELF object file into an executable ELF file.'''
-    x_file_tmp = _maybe_mktemp(x_file, prefix = 'jtc')
+    x_file_tmp = _maybe_mktemp(x_file, prefix='jtc')
     if call(['gcc', '-m32', o_file.name, '-o', x_file_tmp.name]) == 0:
         return _maybe_copy(x_file_tmp, x_file)
     else:

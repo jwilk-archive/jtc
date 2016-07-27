@@ -31,8 +31,7 @@ _STRING_re = re.compile(r'(?sx) \A" | "\Z | \\.')
 
 class Tokenizer(object):
 
-    tokens = \
-    (
+    tokens = (
         'LPAREN', 'RPAREN',
         'COMMA',
         'LBRACE', 'RBRACE',
@@ -50,40 +49,39 @@ class Tokenizer(object):
         'IDENT'
     )
 
-    keywords = \
-    {
-        'if':     'IF',
-        'else':   'ELSE',
-        'while':  'WHILE',
-        'for':    'FOR',
+    keywords = {
+        'if': 'IF',
+        'else': 'ELSE',
+        'while': 'WHILE',
+        'for': 'FOR',
         'return': 'RETURN'
     }
 
     types = ('int', 'double', 'boolean', 'void')
 
-    t_LPAREN    = '[(]'
-    t_RPAREN    = '[)]'
-    t_COMMA     = ','
-    t_LBRACE    = '[{]'
-    t_RBRACE    = '[}]'
+    t_LPAREN = '[(]'
+    t_RPAREN = '[)]'
+    t_COMMA = ','
+    t_LBRACE = '[{]'
+    t_RBRACE = '[}]'
     t_SEMICOLON = ';'
-    t_ASSIGN    = '='
-    t_INC       = '[+][+]'
-    t_DEC       = '--'
-    t_LOR       = '[|][|]'
-    t_LAND      = '&&'
-    t_EQUAL     = '=='
-    t_NOTEQ     = '!='
-    t_LT        = '<'
-    t_GT        = '>'
-    t_LE        = '<='
-    t_GE        = '>='
-    t_PLUS      = '[+]'
-    t_MINUS     = '-'
-    t_TIMES     = '[*]'
-    t_DIV       = '/'
-    t_MOD       = '%'
-    t_NOT       = '!'
+    t_ASSIGN = '='
+    t_INC = '[+][+]'
+    t_DEC = '--'
+    t_LOR = '[|][|]'
+    t_LAND = '&&'
+    t_EQUAL = '=='
+    t_NOTEQ = '!='
+    t_LT = '<'
+    t_GT = '>'
+    t_LE = '<='
+    t_GE = '>='
+    t_PLUS = '[+]'
+    t_MINUS = '-'
+    t_TIMES = '[*]'
+    t_DIV = '/'
+    t_MOD = '%'
+    t_NOT = '!'
 
     def t_COMMENT(self, t):
         r'/[*].*?[*]/ | //.*?$ | \#.*?$'
@@ -175,7 +173,7 @@ class Tokenizer(object):
 
     def build(self):
         '''Initialize the tokenizer.'''
-        self.lexer = lex.lex(object = self, reflags = re.DOTALL | re.MULTILINE | re.VERBOSE)
+        self.lexer = lex.lex(object=self, reflags=(re.DOTALL | re.MULTILINE | re.VERBOSE))
         self.lexer.x = 1
 
     def input(self, data):

@@ -27,12 +27,11 @@ import x86
 
 from struct import pack
 
-__all__ = \
-[
-'simple_type',
-'void_type', 'x86_dword_type', 'boolean_type', 'int_type', 'double_type', 'string_type', 'function_type',
-'void_t', 'boolean_t', 'int_t', 'double_t', 'string_t', 'main_t',
-'eq_comparable_types', 'ineq_comparable_types', 'numeric_types'
+__all__ = [
+    'simple_type',
+    'void_type', 'x86_dword_type', 'boolean_type', 'int_type', 'double_type', 'string_type', 'function_type',
+    'void_t', 'boolean_t', 'int_t', 'double_t', 'string_t', 'main_t',
+    'eq_comparable_types', 'ineq_comparable_types', 'numeric_types'
 ]
 
 eq_comparable_types = set()
@@ -67,16 +66,14 @@ class base(object):
     def py_cast_to(self, type):
         global void_type
         if isinstance(type, void_type):
-            return \
-            [
+            return [
                 (bp.POP_TOP, None),
                 (bp.LOAD_CONST, None)
             ]
         else:
             return NotImplemented
 
-    _doc = \
-    {
+    _doc = {
         'is_eq_comparable': "Returns whether you can compare values of this type with '==' and '!=' operators.",
         'is_ineq_comparable': "Returns whether you can compare values of this type with '<', '<=', '>' etc. operators.",
         'is_numeric': 'Return whether you can do arithmetic operations on values of this type.',
@@ -144,7 +141,7 @@ class x86_dword_type(base):
 
     def x86_asm_write(self, var, expression, env):
         result = []
-        result += expression.to_x86_asm(env);
+        result += expression.to_x86_asm(env)
         result += 'mov [%s], eax' % var.uid,
         return result
 
@@ -172,8 +169,7 @@ class int_type(numeric_type, py_simple_type, x86_dword_type):
     '''The integer (int) type.'''
 
     def py_cast_from(self, type):
-        return \
-        [
+        return [
             (bp.LOAD_GLOBAL, '*int'),
             (bp.ROT_TWO, None),
             (bp.CALL_FUNCTION, 1)
@@ -186,15 +182,13 @@ class int_type(numeric_type, py_simple_type, x86_dword_type):
         if isinstance(type, (void_type, int_type)):
             return []
         elif isinstance(type, double_type):
-            return \
-            [
+            return [
                 'push eax',
                 'fild DWORD [esp]',
                 x86.AddESP(4)
             ]
         elif isinstance(type, boolean_type):
-            return \
-            [
+            return [
                 'or eax, eax',
                 'setnz al',
                 'and eax, 1'
@@ -210,15 +204,13 @@ class double_type(numeric_type, py_simple_type):
     '''The floating-point (double) type.'''
 
     def py_cast_from(self, type):
-        return \
-        [
+        return [
             (bp.LOAD_GLOBAL, '*float'),
             (bp.ROT_TWO, None),
             (bp.CALL_FUNCTION, 1)
         ]
 
-    x86_consts = \
-    {
+    x86_consts = {
         1.0000000000000000000000000000000000: '1',
         3.1415926535897932384626433832795029: 'pi',
         1.4426950408889634073599246810018921: 'l2e',
@@ -232,8 +224,7 @@ class double_type(numeric_type, py_simple_type):
         if value in double_type.x86_consts:
             return ['fld%s' % double_type.x86_consts[value]]
         const = x86.Const(pack('<d', value))
-        return \
-        [
+        return [
             const,
             'fld QWORD [%s]' % const
         ]
@@ -243,13 +234,12 @@ class double_type(numeric_type, py_simple_type):
 
     def x86_asm_write(self, var, expression, env):
         result = []
-        result += expression.to_x86_asm(env);
+        result += expression.to_x86_asm(env)
         result += 'fstp QWORD [%s]' % var.uid,
         return result
 
     def x86_asm_push(self, env):
-        return \
-        [
+        return [
             x86.SubESP(8),
             'fstp QWORD [esp]'
         ]
@@ -266,8 +256,7 @@ class double_type(numeric_type, py_simple_type):
         elif isinstance(type, double_type):
             return []
         elif isinstance(type, int_type):
-            return \
-            [
+            return [
                 x86.SubESP(12),
                 'fnstcw [esp + 4]',
                 'mov eax, [esp + 4]',
@@ -281,8 +270,7 @@ class double_type(numeric_type, py_simple_type):
                 x86.AddESP(8)
             ]
         elif isinstance(type, boolean_type):
-            return \
-            [
+            return [
                 'fldz',
                 'fucomi st0, st1',
                 'setne al',
@@ -302,8 +290,7 @@ class string_type(x86_dword_type):
 
     def x86_asm_const(self, value, env):
         const = x86.Const(value, '\0')
-        return \
-        [
+        return [
             const,
             'mov eax, %s' % const
         ]
@@ -319,8 +306,7 @@ class boolean_type(py_simple_type, x86_dword_type):
     '''The boolean type.'''
 
     def py_cast_from(self, type):
-        return \
-        [
+        return [
             (bp.LOAD_GLOBAL, '*bool'),
             (bp.ROT_TWO, None),
             (bp.CALL_FUNCTION, 1)

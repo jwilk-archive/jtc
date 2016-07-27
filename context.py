@@ -46,12 +46,12 @@ def inspect(program):
     ok = True
     name_dict = {}
     for function in program.contents:
-        if name_dict.has_key(function.name):
+        if function.name in name_dict:
             InspectError(function.position, "Redefinition of function '%s' " % function.name).warn()
             ok = False
         else:
             name_dict[function.name] = [function]
-    if not name_dict.has_key('main'):
+    if 'main' not in name_dict:
         InspectError(None, "Missing function 'main'").warn()
     for function in program.contents:
         ok &= inspect_function(function, name_dict)
@@ -68,14 +68,14 @@ def update_bindings(widget, name_dict):
     ok = True
     for var_ref in widget.get_var_refs():
         var_name = var_ref.ident
-        if name_dict.has_key(var_name):
+        if var_name in name_dict:
             var_ref.bind = name_dict[var_name][-1]
         else:
             ok = False
             InspectError(var_ref.position, "Variable '%s' undeclared" % var_name).warn()
     return ok
 
-def inspect_block(function, block, name_dict, next_uid = 0):
+def inspect_block(function, block, name_dict, next_uid=0):
     ok = True
     varset = set()
     for statement in block.contents:
@@ -90,7 +90,7 @@ def inspect_block(function, block, name_dict, next_uid = 0):
                     InspectError(variable.position, "Redeclaration of variable '%s'" % varname).warn()
                     ok = False
                 else:
-                    if not name_dict.has_key(varname):
+                    if varname not in name_dict:
                         name_dict[varname] = []
                     name_dict[varname] += variable,
                     varset.add(varname)

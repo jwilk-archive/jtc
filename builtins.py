@@ -30,16 +30,14 @@ import type
 import bp
 import x86
 
-_py_globals = \
-{
+_py_globals = {
     'bool': '*bool',
     'int': '*int',
     'float': '*float',
     'raw_input': '*input',
     'RuntimeError': '*error'
 }
-py_stub_pre = \
-sum(
+py_stub_pre = sum(
     [[(bp.LOAD_GLOBAL, _name), (bp.STORE_GLOBAL, _alias)] for _name, _alias in _py_globals.iteritems()],
     []
 )
@@ -53,9 +51,7 @@ py_stub_post = filter(None,
     (bp.LOAD_GLOBAL, '__name__'),
     (bp.LOAD_CONST, '__main__'),
     (bp.COMPARE_OP, '=='),
-]
-+ bp.jump_if_false(_stub_label) +
-[
+] + bp.jump_if_false(_stub_label) + [
     sys.version_info >= (2, 5) and (bp.LOAD_CONST, -1),
     (bp.LOAD_CONST, None),
     (bp.IMPORT_NAME, 'sys'),
@@ -76,11 +72,10 @@ _s_0div_error = x86.Const('ZeroDivisionError\n\0')
 _x_stderr = x86.Extern('stderr')
 _x_fputs = x86.Extern('fputs')
 _x_exit = x86.Extern('exit')
-x86_stub = \
-[
+x86_stub = [
     _s_io_error, _s_0div_error,
     _x_stderr, _x_fputs, _x_exit,
-    x86.Label('main', public = True),
+    x86.Label('main', public=True),
     'jmp _f_main',
     _label_io_error,
     'push DWORD [%s]' % _x_stderr,
@@ -132,16 +127,16 @@ class pdf_function(syntax.function):
 
     def body_to_pyc(self, filename):
         code = bp.Code(
-            code = self.py,
-            freevars = [],
-            args = ['_%d' % n for n in xrange(len(self.type.arg_type_list))],
-            varargs = False,
-            varkwargs = False,
-            newlocals = True,
-            name = self.name,
-            filename = this_module_file_name,
-            firstlineno = 0,
-            docstring = None)
+            code=self.py,
+            freevars=[],
+            args=['_%d' % n for n in xrange(len(self.type.arg_type_list))],
+            varargs=False,
+            varkwargs=False,
+            newlocals=True,
+            name=self.name,
+            filename=this_module_file_name,
+            firstlineno=0,
+            docstring=None)
         return code
 
     body_to_pyc.__doc__ = syntax.function.body_to_pyc.im_func.__doc__
@@ -154,8 +149,7 @@ class pdf_function(syntax.function):
 
     to_x86_asm.__doc__ = syntax.function.to_x86_asm.im_func.__doc__
 
-_py_pdf_print = \
-[
+_py_pdf_print = [
     (bp.LOAD_FAST, '_0'),
     (bp.PRINT_ITEM, None),
     (bp.PRINT_NEWLINE, None),
@@ -163,8 +157,7 @@ _py_pdf_print = \
     (bp.RETURN_VALUE, None)
 ]
 
-_py_pdf_error = \
-[
+_py_pdf_error = [
     (bp.LOAD_GLOBAL, '*error'),
     (bp.CALL_FUNCTION, 0),
     (bp.RAISE_VARARGS, 1),
@@ -172,8 +165,7 @@ _py_pdf_error = \
     (bp.RETURN_VALUE, None)
 ]
 
-_py_pdf_read_int = \
-[
+_py_pdf_read_int = [
     (bp.LOAD_GLOBAL, '*int'),
     (bp.LOAD_GLOBAL, '*input'),
     (bp.CALL_FUNCTION, 0),
@@ -181,8 +173,7 @@ _py_pdf_read_int = \
     (bp.RETURN_VALUE, None)
 ]
 
-_py_pdf_read_double = \
-[
+_py_pdf_read_double = [
     (bp.LOAD_GLOBAL, '*float'),
     (bp.LOAD_GLOBAL, '*input'),
     (bp.CALL_FUNCTION, 0),
@@ -192,8 +183,7 @@ _py_pdf_read_double = \
 
 _const = x86.Const('%d\n\0')
 _x_printf = x86.Extern('printf')
-_x86_pdf_print_int = \
-[
+_x86_pdf_print_int = [
     _const, _x_printf,
     'push DWORD [esp + 4]',
     'push %s' % _const,
@@ -210,8 +200,7 @@ _x_snprintf = x86.Extern('snprintf')
 _x_puts = x86.Extern('puts')
 _label_loop = x86.Label()
 _label_exit_loop = x86.Label()
-_x86_pdf_print_double = \
-[
+_x86_pdf_print_double = [
     _const, _x_snprintf, _x_puts,
     'sub esp, 36',
     'mov edx, esp',
@@ -249,8 +238,7 @@ _x86_pdf_print_double = \
 del _const
 del _label_loop, _label_exit_loop
 
-_x86_pdf_print_string = \
-[
+_x86_pdf_print_string = [
     _x_puts,
     'push DWORD [esp + 4]',
     'call %s' % _x_puts,
@@ -261,8 +249,7 @@ _x86_pdf_print_string = \
 ]
 
 _const = x86.Const('RuntimeError\n\0')
-_x86_pdf_error = \
-[
+_x86_pdf_error = [
     _const, _x_fputs, _x_exit,
     'push DWORD [stderr]',
     'push %s' % _const,
@@ -274,8 +261,7 @@ del _const
 
 _const = x86.Const('%d\0')
 _x_scanf = x86.Extern('scanf')
-_x86_pdf_read_int = \
-[
+_x86_pdf_read_int = [
     _const, _x_scanf,
     'sub esp, 4',
     'mov eax, esp',
@@ -291,8 +277,7 @@ _x86_pdf_read_int = \
 del _const
 
 _const = x86.Const('%lf\0')
-_x86_pdf_read_double = \
-[
+_x86_pdf_read_double = [
     _const, _x_scanf,
     'sub esp, 8',
     'mov eax, esp',

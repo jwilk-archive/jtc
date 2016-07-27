@@ -36,11 +36,11 @@ class Parser(object):
         self.tokens = lexer.tokens
         self.precedence = [('right', 'ELSE')]
         self.start = 'program'
-        self.yacc = yacc.yacc(module = self, debug = 0)
+        self.yacc = yacc.yacc(module=self, debug=0)
 
     def parse(self):
         '''Build the syntax tree.'''
-        return self.yacc.parse(lexer = self.lexer)
+        return self.yacc.parse(lexer=self.lexer)
 
     def p_program(self, p):
         'program : fun_def_list'
@@ -224,7 +224,7 @@ class Parser(object):
 
     def p_cast_e(self, p):
         'sa_e : LPAREN type RPAREN sa_e'
-        p[0] = expression.cast(operand = p[4], type = p[2], position = p.lexpos(1))
+        p[0] = expression.cast(operand=p[4], type=p[2], position=p.lexpos(1))
 
     def p_call_e(self, p):
         'prefix_e : IDENT LPAREN expr_list RPAREN'
