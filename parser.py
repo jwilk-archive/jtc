@@ -276,7 +276,6 @@ class Parser(object):
         p[0] = type.simple_type(p[1])
 
     def p_error(self, token):
-        from sys import stderr
         if token:
             raise ParseError(token.lexpos, 'Syntax error near ' + repr(token.value))
         else:
