@@ -94,7 +94,7 @@ class Tokenizer(object):
         self._error('Error: Unterminated /* ... */ comment')
 
     def t_DOUBLE(self, t):
-        '''
+        r'''
             ( \d+[.]\d* | \d*[.]\d+ ) ( [eE] [+-]?\d+ )? |
             \d+ [eE] [+-]?\d+
         '''
