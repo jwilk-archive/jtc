@@ -22,8 +22,6 @@
 
 '''Nodes of Javalette syntax trees.'''
 
-from struct import pack
-
 _type = type
 import type
 
