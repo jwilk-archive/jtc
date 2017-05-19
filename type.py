@@ -77,7 +77,7 @@ class base(object):
         'is_eq_comparable': "Returns whether you can compare values of this type with '==' and '!=' operators.",
         'is_ineq_comparable': "Returns whether you can compare values of this type with '<', '<=', '>' etc. operators.",
         'is_numeric': 'Return whether you can do arithmetic operations on values of this type.',
-        'is_castable_to': 'Return whether it is legal to cast this type to an other type.',
+        'is_castable_to': 'Return whether it is legal to cast this type to another type.',
         'py_cast_to': '[py] Generate code for type-casting a value of this type to the provided type.',
         'py_cast_from': '[py] Generate code for type-casting a value of the provided type to this type.',
         'x86_asm_push': '[x86] Generate code for pushing a value of this type.',
