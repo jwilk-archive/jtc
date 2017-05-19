@@ -243,7 +243,7 @@ class Parser(object):
         p[0] = p[1]
         p[0] += p[3],
 
-    def p_ident_e(sellf, p):
+    def p_ident_e(self, p):
         'simple_e : IDENT'
         p[0] = expression.reference(p[1], p.lexpos(1))
 
